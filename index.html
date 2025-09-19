@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajesh Singh - Data Analyst Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // This enables Tailwind's class-based dark mode
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Add EmailJS CDN Script -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Lighter gray background */
+        }
+        .hero-bg {
+            background-color: #111827; /* Dark blue-gray */
+        }
+        .section-title {
+            @apply text-4xl font-bold text-gray-800 mb-8 text-center;
+        }
+        .skill-card {
+            @apply bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex items-center;
+        }
+        .project-card {
+            @apply bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300;
+        }
+        .nav-link {
+             /* Base class for JS targeting, hover/default styles are now in the HTML */
+        }
+        .nav-link.active {
+            @apply text-blue-400 font-bold scale-110 transform;
+        }
+        .mobile-nav-link {
+            @apply text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors;
+        }
+        .tag {
+             @apply inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full;
+        }
+        /* Typewriter cursor effect */
+        .typewriter span {
+            border-right: .1em solid white;
+            animation: caret 1s steps(1) infinite;
+        }
+        @keyframes caret {
+            50% {
+                border-color: transparent;
+            }
+        }
+        /* Flipping Card Animation */
+        .flipping-card-container {
+            perspective: 1000px;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+        }
+        .flipping-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: flip 8s infinite linear;
+        }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            background-color: white;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        @keyframes flip {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+    </style>
+     <script>
+        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+<body class="text-gray-700 dark:bg-gray-900 dark:text-gray-300">
+
+    <!-- Header & Navigation -->
+    <nav id="navbar" class="fixed w-full z-20 top-0 start-0 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+            <div class="relative flex items-center justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button-->
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 flex items-center justify-center sm:justify-between">
+                    <!-- Left: Name -->
+                    <div class="flex-shrink-0 flex items-center">
+                       <a href="#" class="text-white text-xl font-bold">Rajesh Singh</a>
+                    </div>
+                    <!-- Center: Links (Desktop) -->
+                    <div class="hidden sm:block">
+                        <nav class="flex space-x-6">
+                            <a href="#about" class="nav-link text-white hover:text-gray-200 transition-colors duration-300 font-medium">About</a>
+                            <a href="#skills" class="nav-link text-white hover:text-gray-200 transition-colors duration-300 font-medium">Skills</a>
+                            <a href="#projects" class="nav-link text-white hover:text-gray-200 transition-colors duration-300 font-medium">Projects</a>
+                            <a href="#experience" class="nav-link text-white hover:text-gray-200 transition-colors duration-300 font-medium">Experience</a>
+                            <a href="#contact" class="nav-link text-white hover:text-gray-200 transition-colors duration-300 font-medium">Contact</a>
+                        </nav>
+                    </div>
+                     <!-- Right: Hire Me & Dark Mode Toggle (Desktop) -->
+                    <div class="hidden sm:flex sm:items-center">
+                        <a href="#contact" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm">Hire Me</a>
+                        <button id="dark-mode-toggle" class="ml-4 p-2 rounded-full text-white hover:bg-gray-700 transition-colors duration-300 focus:outline-none">
+                            <i id="moon-icon" data-feather="moon" class="h-5 w-5"></i>
+                            <i id="sun-icon" data-feather="sun" class="h-5 w-5 hidden"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="sm:hidden hidden bg-gray-800" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3">
+                <nav class="flex flex-col space-y-1">
+                    <a href="#about" class="mobile-nav-link">About</a>
+                    <a href="#skills" class="mobile-nav-link">Skills</a>
+                    <a href="#projects" class="mobile-nav-link">Projects</a>
+                    <a href="#experience" class="mobile-nav-link">Experience</a>
+                    <a href="#contact" class="mobile-nav-link">Contact</a>
+                </nav>
+                <div class="pt-4 mt-4 border-t border-gray-700 space-y-2">
+                    <a href="#contact" class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm">Hire Me</a>
+                    <button id="dark-mode-toggle-mobile" class="w-full flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors duration-300 focus:outline-none">
+                        <i id="moon-icon-mobile" data-feather="moon" class="h-5 w-5"></i>
+                        <i id="sun-icon-mobile" data-feather="sun" class="h-5 w-5 hidden"></i>
+                        <span class="ml-3">Toggle Theme</span>
+                    </button>
+               </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="hero-bg text-white pt-32 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
+                    Hi, I'm Rajesh Singh
+                </h1>
+                <div class="text-2xl md:text-3xl text-blue-400 font-semibold mb-6 h-10 typewriter">
+                    <span></span>
+                </div>
+                <p class="text-lg text-gray-300 max-w-xl mb-8">
+                    I transform complex datasets into actionable insights. Passionate about uncovering stories hidden in data and driving business growth through analytics.
+                </p>
+                <div class="flex justify-center md:justify-start space-x-4">
+                    <a href="#projects" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300">View My Work</a>
+                    <a href="https://drive.google.com/file/d/1JPZtVqocsCHthV9y0b362xtuctQaAiUq/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center">
+                        Resume <i data-feather="download" class="ml-2 h-5 w-5"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                 <img src="photo.png" alt="Rajesh Singh Portrait" class="rounded-full w-[32rem] md:w-[40rem] max-w-[90vw] aspect-square object-cover border-4 border-blue-500 shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/600x600/111827/FFFFFF?text=Rajesh+Singh';">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- About Me Section -->
+        <section id="about" class="py-20 bg-white dark:bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-gray-800 dark:text-white mb-8 text-center">About Me</h2>
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/3 w-full max-w-sm mx-auto mb-10 md:mb-0">
+                        <div class="flipping-card-container">
+                            <div class="flipping-card">
+                                <div class="card-face card-front border-2 border-blue-100 dark:bg-gray-700 dark:border-gray-600">
+                                    <h3 class="text-3xl font-bold text-gray-800 dark:text-white">Data<br>Storyteller</h3>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Turning data into narratives.</p>
+                                </div>
+                                <div class="card-face card-back border-2 border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+                                    <h3 class="text-3xl font-bold text-gray-800 dark:text-white">Data<br>Steward</h3>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Ensuring data integrity and quality.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <p class="text-lg mb-4">
+                            Hello! I'm a detail-oriented Data Analyst with a strong foundation in statistics, data visualization, and machine learning. My journey into data began with a fascination for patterns and a desire to make data-driven decisions that have a real-world impact.
+                        </p>
+                        <p class="text-lg mb-4">
+                            I thrive on the challenge of cleaning, analyzing, and interpreting large datasets to answer critical business questions. My expertise lies in using tools like Python, R, and SQL to manipulate data, and BI tools such as Tableau and Power BI to create compelling visualizations and dashboards that are easy for all stakeholders to understand.
+                        </p>
+                        <p class="text-lg">
+                           When I'm not exploring data, you can find me hiking, reading about the latest tech trends, or experimenting with new recipes in the kitchen.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 dark:bg-gray-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-5xl font-extrabold text-gray-800 dark:text-white mb-12 text-center">Technical Skills</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" class="h-8 w-8 mr-4" alt="Python Icon"/><span class="font-semibold text-lg">Python</span></div>
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/r/r-original.svg" class="h-8 w-8 mr-4" alt="R Icon"/><span class="font-semibold text-lg">R</span></div>
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azuresqldatabase/azuresqldatabase-original.svg" class="h-8 w-8 mr-4" alt="SQL Icon"/><span class="font-semibold text-lg">SQL</span></div>
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" class="h-8 w-8 mr-4" alt="Pandas Icon"/><span class="font-semibold text-lg">Pandas&nbsp;&&nbsp;NumPy</span></div>
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="tableau.svg" class="h-16 w-16 mr-4" alt="Tableau Icon"><span class="font-semibold text-lg">Tableau</span></div>
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="bi.svg" class="h-8 w-8 mr-4" alt="Power BI Icon"><span class="font-semibold text-lg">Power&nbsp;BI</span></div>
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original-wordmark.svg" class="h-8 w-8 mr-4" alt="Jupyter Icon"/><span class="font-semibold text-lg">Jupyter&nbsp;Notebook</span></div>
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="github.svg" class="h-8 w-8 mr-4" alt="Git Icon" onerror="this.onerror=null;this.src='https://placehold.co/32x32/ffffff/000000?text=G';"><span class="font-semibold text-lg">Git</span></div>
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scikitlearn/scikitlearn-original.svg" class="h-8 w-8 mr-4" alt="Scikit-learn Icon"/><span class="font-semibold text-lg">Scikit-learn</span></div>
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matplotlib/matplotlib-original.svg" class="h-8 w-8 mr-4" alt="Matplotlib Icon"/><span class="font-semibold text-lg">Matplotlib</span></div>
+                    <div class="skill-card dark:bg-transparent dark:shadow-none"><img src="excel.svg" class="h-8 w-8 mr-4" alt="Excel Icon" onerror="this.onerror=null;this.src='https://placehold.co/32x32/ffffff/000000?text=E';"><span class="font-semibold text-lg">Advanced&nbsp;Excel</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 bg-white dark:bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-5xl font-extrabold text-gray-800 dark:text-white mb-12 text-center">Projects</h2>
+                
+                <!-- Filter Buttons -->
+                <div class="flex justify-center flex-wrap gap-2 mb-10">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="python">Python</button>
+                    <button class="filter-btn" data-filter="bi">BI Tools</button>
+                    <button class="filter-btn" data-filter="ml">Machine Learning</button>
+                    <button class="filter-btn" data-filter="sql">SQL</button>
+                </div>
+                
+                <!-- Project Grid -->
+                <div id="project-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project 1 (Commented Out) -->
+                    <!--
+                    <div class="project-card dark:bg-gray-700" data-category="python ml">
+                        <img src="https://images.unsplash.com/photo-1556155092-490a1ba16284?q=80&w=2070&auto=format&fit=crop" alt="Customer Churn Prediction" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 dark:text-white">Customer Churn Prediction</h3>
+                            <p class="text-gray-600 dark:text-gray300 mb-4">Developed a machine learning model to predict customer churn for a telecom company, achieving 85% accuracy using Logistic Regression and Random Forest.</p>
+                             <div class="mb-4">
+                                <span class="tag dark:bg-blue-900 dark:text-blue-200">Python</span><span class="tag dark:bg-blue-900 dark:text-blue-200">Scikit-learn</span><span class="tag dark:bg-blue-900 dark:text-blue-200">Pandas</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="#" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-semibold">View on GitHub <i data-feather="github" class="inline h-4 w-4"></i></a>
+                                <a href="#" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-semibold">Live Demo <i data-feather="external-link" class="inline h-4 w-4"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+
+                    <!-- Project 2 (Commented Out) -->
+                    <!--
+                    <div class="project-card dark:bg-gray-700" data-category="python sql">
+                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2070&auto=format&fit=crop" alt="A/B Testing Analysis" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 dark:text-white">A/B Testing Analysis</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Analyzed results from a marketing campaign's A/B test to determine the winning strategy, leading to a 15% increase in conversion rate.</p>
+                             <div class="mb-4">
+                                <span class="tag dark:bg-blue-900 dark:text-blue-200">Python</span><span class="tag dark:bg-blue-900 dark:text-blue-200">SQL</span><span class="tag dark:bg-blue-900 dark:text-blue-200">Statistics</span>
+                            </div>
+                           <div class="flex justify-between items-center">
+                                <a href="#" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-semibold">View on GitHub <i data-feather="github" class="inline h-4 w-4"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+
+                    <!-- Project 3 -->
+                    <div class="project-card dark:bg-gray-700" data-category="bi">
+                        <img src="dash.png" alt="Shareholder Insight Analysis" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 dark:text-white">Shareholder Insight Analysis</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Developed an interactive dashboard analyzing premiums, profitability, and assets. Utilized charts, KPIs, and filters to simplify complex data, driving smarter business decisions.</p>
+                             <div class="mb-4 flex flex-wrap items-center gap-x-2">
+                                <span class="tag dark:bg-blue-900 dark:text-blue-200">Tableau</span>
+                                <span class="text-gray-400 dark:text-gray-500">|</span>
+                                <span class="tag dark:bg-blue-900 dark:text-blue-200">Dashboard</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <a href="https://github.com/RAJESHH03/PROJECTS/blob/main/Tableau%20Dashboard/Finance.pdf" target="_blank" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-semibold">View on GitHub <i data-feather="github" class="inline h-4 w-4"></i></a>
+                                <a href="https://public.tableau.com/views/Finance_17375843338150/StakeholderInsightsandPerformanceDashboard?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link" target="_blank" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-semibold">Live Demo <i data-feather="external-link" class="inline h-4 w-4"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                     <div class="project-card dark:bg-gray-700" data-category="python ml">
+                        <img src="fraud.png" alt="Mobile Financial Services (MFS) Fraud Detection" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 dark:text-white">MFS Fraud Detection</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Analyzing over 6 million mobile financial service transactions to identify and predict fraudulent patterns using machine learning and the SMOTE technique.</p>
+                             <div class="mb-4 flex flex-wrap items-center gap-x-2">
+                                <span class="tag dark:bg-blue-900 dark:text-blue-200">Python</span>
+                                <span class="text-gray-400 dark:text-gray-500">|</span>
+                                <span class="tag dark:bg-blue-900 dark:text-blue-200">Machine Learning</span>
+                                <span class="text-gray-400 dark:text-gray-500">|</span>
+                                <span class="tag dark:bg-blue-900 dark:text-blue-200">SMOTE</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">Under Process</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 5 -->
+                    <div class="project-card dark:bg-gray-700" data-category="python">
+                        <img src="movie.png" alt="Box Office Analysis" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 dark:text-white">Box Office Analysis</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Analyzed 7,600+ movies to identify factors affecting box office success. Found that higher budgets strongly correlate with higher earnings and audience votes moderately impact ratings.</p>
+                             <div class="mb-4 flex flex-wrap items-center gap-x-2">
+                                <span class="tag dark:bg-blue-900 dark:text-blue-200">Python</span>
+                                <span class="text-gray-400 dark:text-gray-500">|</span>
+                                <span class="tag dark:bg-blue-900 dark:text-blue-200">Matplotlib</span>
+                                <span class="text-gray-400 dark:text-gray-500">|</span>
+                                <span class="tag dark:bg-blue-900 dark:text-blue-200">Pandas</span>
+                            </div>
+                           <div class="flex justify-between items-center">
+                                <a href="https://github.com/RAJESHH03/PROJECTS/blob/main/Movie%20Correlation/Box%20Office%20Analysis.ipynb" target="_blank" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-semibold">View on GitHub <i data-feather="github" class="inline h-4 w-4"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 dark:bg-gray-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-5xl font-extrabold text-gray-800 dark:text-white mb-12 text-center">Work Experience</h2>
+                <div class="relative border-l-2 border-blue-500 dark:border-blue-400 ml-4">
+                    <!-- New Freelance Experience -->
+                    <div class="mb-10 ml-8">
+                        <div class="absolute w-4 h-4 bg-blue-500 dark:bg-blue-400 rounded-full -left-2 border-2 border-white dark:border-gray-900"></div>
+                        <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">August 2023 – November 2024</p>
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Freelance SEO & Web Analyst | Self-Employed</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">
+                            - Managed a WordPress website, implementing and analyzing tracking codes with <strong>Google Analytics</strong> to monitor user engagement and traffic patterns.
+                            <br>- Developed and executed a data-driven SEO strategy that improved keyword rankings and organic search visibility.
+                            <br>- Monitored site performance using <strong>Google Analytics</strong>, applying insights from key metrics like organic traffic and user behavior to refine the content and SEO strategy.
+                        </p>
+                    </div>
+                    <!-- Experience 1 -->
+                    <div class="mb-10 ml-8">
+                        <div class="absolute w-4 h-4 bg-blue-500 dark:bg-blue-400 rounded-full -left-2 border-2 border-white dark:border-gray-900"></div>
+                        <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">Jul 2022 – Sep 2022</p>
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Data Science Intern | Acmegrade (Remote)</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">
+                            - Analyzed datasets using <strong>Python</strong> and <strong>Excel</strong> to uncover patterns and insights that improved project outcomes.
+                            <br>- Built <strong>predictive models</strong> to forecast business metrics, enabling better decision-making.
+                            <br>- Collaborated with a <strong>cross-functional team</strong> to deliver data-driven solutions on time.
+                        </p>
+                    </div>
+                    <!-- Experience 2 -->
+                    <div class="ml-8">
+                        <div class="absolute w-4 h-4 bg-blue-500 dark:bg-blue-400 rounded-full -left-2 border-2 border-white dark:border-gray-900"></div>
+                        <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">Jun 2022 – Jul 2022</p>
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Campus Ambassador | Acmegrade</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">
+                           - Represented Acmegrade by <strong>showcasing its diverse programs</strong> in Data Science, Human Resources, B.Tech, BCA, and related domains.
+                           <br>- Guided students in identifying courses aligned with their <strong>career aspirations and skill development goals</strong>.
+                           <br>- Increased <strong>student engagement and enrollment</strong> through targeted outreach and peer interaction.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-white dark:bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-5xl font-extrabold text-gray-800 dark:text-white mb-12 text-center">Get In Touch</h2>
+                <p class="text-center text-lg max-w-2xl mx-auto mb-12">I'm currently open to new opportunities and collaborations. If you have a project in mind or just want to connect, feel free to reach out!</p>
+                
+                <div class="max-w-2xl mx-auto">
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdgqV2dhLtqe79r5FD1qNb0ud8dApfwI5l-1tY-8uAF35XYkw/viewform?embedded=true" width="100%" height="824" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                </div>
+                 <div class="mt-12 text-center">
+                    <p class="text-lg font-semibold mb-4">Or connect with me on:</p>
+                    <div class="flex justify-center space-x-6">
+                        <a href="https://www.linkedin.com/in/rajesh-singh/" target="_blank" class="text-gray-500 hover:opacity-75 transition-opacity duration-300" aria-label="LinkedIn Profile">
+                           <img src="linkedin.svg" alt="LinkedIn" class="w-8 h-8" onerror="this.onerror=null;this.src='https://placehold.co/32x32/ffffff/000000?text=Li';">
+                        </a>
+                        <a href="https://github.com/RAJESHH03" target="_blank" class="text-gray-500 hover:opacity-75 transition-opacity duration-300" aria-label="GitHub Profile">
+                            <img src="github.svg" alt="GitHub" class="w-8 h-8" onerror="this.onerror=null;this.src='https://placehold.co/32x32/ffffff/000000?text=Gh';">
+                        </a>
+                        <a href="https://x.com/Rajeshh_singh" target="_blank" class="text-gray-500 hover:opacity-75 transition-opacity duration-300" aria-label="X Profile">
+                            <img src="x.svg" alt="X" class="w-8 h-8" onerror="this.onerror=null;this.src='https://placehold.co/32x32/ffffff/000000?text=X';">
+                        </a>
+                        <a href="https://www.instagram.com/hi.moron" target="_blank" class="text-gray-500 hover:opacity-75 transition-opacity duration-300" aria-label="Instagram Profile">
+                            <img src="instagram.svg" alt="Instagram" class="w-8 h-8" onerror="this.onerror=null;this.src='https://placehold.co.D/32x32/ffffff/000000?text=Ig';">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="current-year">2025</span> Rajesh Singh. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Feather Icons
+        feather.replace();
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuIcons = mobileMenuButton.querySelectorAll('svg');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuIcons.forEach(icon => icon.classList.toggle('hidden'));
+        });
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                 mobileMenu.classList.add('hidden');
+                 mobileMenuIcons[0].classList.remove('hidden');
+                 mobileMenuIcons[1].classList.add('hidden');
+            });
+        });
+
+        // Navbar styling on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-gray-800', 'shadow-md');
+            } else {
+                navbar.classList.remove('bg-gray-800', 'shadow-md');
+            }
+        });
+
+        // Active Nav Link Highlighting on Scroll
+        const sections = document.querySelectorAll('section, header');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = 'home'; // Default to 'home'
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 70) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+
+        // Typewriter Effect
+        const typewriterElement = document.querySelector('.typewriter span');
+        const roles = ["A Data Analyst", "A Problem Solver", "A Data Storyteller"];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentRole = roles[roleIndex];
+            if (isDeleting) {
+                typewriterElement.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+            }
+            
+            const typingSpeed = isDeleting ? 100 : 150;
+            setTimeout(type, typingSpeed);
+        }
+
+        // Project Filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Style active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filter = button.dataset.filter;
+
+                projectCards.forEach(card => {
+                    card.style.display = 'none'; // Hide all cards initially
+                    const categories = card.dataset.category.split(' ');
+                    if (filter === 'all' || categories.includes(filter)) {
+                        card.style.display = 'block'; // Show matching cards
+                    }
+                });
+            });
+        });
+
+        // Styling for filter buttons
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .filter-btn {
+                padding: 0.5rem 1.25rem;
+                border: 1px solid #d1d5db;
+                border-radius: 9999px;
+                font-weight: 500;
+                color: #374151;
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+            .filter-btn:hover {
+                background-color: #e5e7eb;
+            }
+            .filter-btn.active {
+                background-color: #2563eb;
+                color: white;
+                border-color: #2563eb;
+            }
+            .dark .filter-btn {
+                color: #d1d5db;
+                border-color: #4b5563;
+            }
+             .dark .filter-btn:hover {
+                background-color: #374151;
+            }
+            .dark .filter-btn.active {
+                background-color: #3b82f6;
+                color: white;
+                border-color: #3b82f6;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const darkModeToggleMobile = document.getElementById('dark-mode-toggle-mobile');
+        const sunIconMobile = document.getElementById('sun-icon-mobile');
+        const moonIconMobile = document.getElementById('moon-icon-mobile');
+        const htmlElement = document.documentElement;
+
+        const applyTheme = (theme) => {
+            if (theme === 'dark') {
+                htmlElement.classList.add('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                sunIconMobile.classList.remove('hidden');
+                moonIconMobile.classList.add('hidden');
+            } else {
+                htmlElement.classList.remove('dark');
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+                moonIconMobile.classList.remove('hidden');
+                sunIconMobile.classList.add('hidden');
+            }
+            feather.replace(); // Re-render icons after changing visibility
+        };
+
+        const toggleTheme = () => {
+            const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('color-theme', newTheme);
+            applyTheme(newTheme);
+        };
+
+        // Apply the cached theme on load
+        const savedTheme = localStorage.getItem('color-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        applyTheme(savedTheme);
+        
+        darkModeToggle.addEventListener('click', toggleTheme);
+        darkModeToggleMobile.addEventListener('click', toggleTheme);
+
+        // Set Dynamic Year
+        const setDynamicYear = () => {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        };
+
+        // Run scripts on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            type();
+            setDynamicYear();
+        });
+
+    </script>
+</body>
+</html>
+
